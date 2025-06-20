@@ -6,19 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class CategoryService {
-    private final List<Category> categorias = new ArrayList<>();
+public interface CategoryService {
 
-    public void clear() {
-        categorias.clear();
-    }
+    public void clear();
 
-    public void add(Category c) {
-        categorias.add(c);
-    }
+    public void add(Category c);
 
-    public List<Category> all() {
-        return categorias;
-    }
+    public List<Category> all();
 }
