@@ -3,9 +3,9 @@ package br.com.joshua.cucumberbasic.bdd;
 import br.com.joshua.cucumberbasic.domain.Category;
 import br.com.joshua.cucumberbasic.service.CategoryService;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import org.assertj.core.api.Assertions;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
@@ -23,47 +23,47 @@ public class CategorySteps {
         this.restTemplate = restTemplate;
     }
 
-    @Given("there are no categories registered")
-    public void clearCategories() {
+    @Dado("que não existem categorias cadastradas")
+    public void limparCategorias() {
         manager.clear();
     }
 
-    @When("I register the following categories")
-    public void registerCategories(DataTable table) {
+    @Quando("eu cadastro as seguintes categorias")
+    public void cadastrarCategorias(DataTable table) {
         for (Map<String, String> row : table.asMaps()) {
-            Category c = new Category(row.get("name"), row.get("description"));
+            Category c = new Category(row.get("nome"), row.get("descrição"));
             manager.add(c);
         }
     }
 
-    @Then("the category list should contain {int} categories")
-    public void checkCategoryCount(int expectedCount) {
+    @Entao("a lista de categorias deve conter {int} categorias")
+    public void verificarQuantidadeCategorias(int expectedCount) {
         Assertions.assertThat(manager.all())
                 .hasSize(expectedCount);
     }
 
-    @When("I send the following categories via API")
-    public void sendCategoriesViaApi(DataTable table) {
+    @Quando("eu envio as seguintes categorias pela API")
+    public void enviarCategoriasPelaApi(DataTable table) {
         for (Map<String, String> row : table.asMaps()) {
-            Category category = new Category(row.get("name"), row.get("description"));
+            Category category = new Category(row.get("nome"), row.get("descrição"));
             restTemplate.postForEntity("/categories", category, Void.class);
         }
     }
 
-    @Then("the API should return {int} categories")
-    public void checkApiCategoryCount(int total) {
+    @Entao("a API deve retornar {int} categorias")
+    public void verificarQuantidadeCategoriasNaApi(int total) {
         ResponseEntity<Category[]> response = restTemplate.getForEntity("/categories", Category[].class);
         Assertions.assertThat(response.getBody()).hasSize(total);
     }
 
-    @When("I try to register an invalid category")
-    public void registerInvalidCategory() {
-        Category category = new Category("", "no name");
+    @Quando("eu tento cadastrar uma categoria inválida")
+    public void cadastrarCategoriaInvalida() {
+        Category category = new Category("", "sem nome");
         response = restTemplate.postForEntity("/categories", category, Void.class);
     }
 
-    @Then("the system should reject with status {int}")
-    public void checkErrorStatus(int status) {
+    @Entao("o sistema deve rejeitar com status {int}")
+    public void verificarStatusErro(int status) {
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(status);
     }
 }
