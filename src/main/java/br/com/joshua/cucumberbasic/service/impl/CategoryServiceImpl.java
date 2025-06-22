@@ -15,8 +15,9 @@ public class CategoryServiceImpl implements CategoryService {
         categorias.clear();
     }
 
-    public void add(Category c) {
-        categorias.add(c);
+    public Category add(Category category) {
+        categorias.add(category);
+        return category;
     }
 
     public List<Category> all() {

@@ -10,7 +10,7 @@ public interface CategoryService {
 
     public void clear();
 
-    public void add(Category c);
+    public Category add(Category c);
 
     public List<Category> all();
 }

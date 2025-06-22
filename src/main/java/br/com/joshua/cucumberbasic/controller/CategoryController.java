@@ -20,9 +20,9 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid Category category) {
-        service.add(category);
-        return ResponseEntity.created(URI.create("/categories")).build();
+    public ResponseEntity<Category> create(@RequestBody @Valid Category category) {
+        Category categoryResponse = service.add(category);
+        return ResponseEntity.created(URI.create("/categories")).body(categoryResponse);
     }
 
     @GetMapping
